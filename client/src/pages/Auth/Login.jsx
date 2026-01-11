@@ -3,6 +3,7 @@ import AuthLayout from '../../components/AuthLayout.jsx'
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
 import {useNavigate} from 'react-router-dom'
+import { isValidEmail } from '../../context/helper.js';
 
 
 function Login() {
@@ -10,6 +11,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error,setError]=useState("");
   const navigate=useNavigate();
 
   const handleShowPassword = () => {
@@ -17,9 +19,28 @@ function Login() {
   }
 
 
-  const handleSubmit = (e) => {
+   const handleSubmit = (e) => {
+    e.preventDefault();
 
+    if(!isValidEmail(email))
+    {
+      setError("please enter a valid email");
+      return;
+    }
+    if(!password)
+    {
+      setError("please enter a password");
+      return;
+    }
+    if(password.length<8)
+    {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+    setError("");
   }
+
+
   return (
     <AuthLayout>
       <div className="lg:w-[70%] h-3/4 md:h-full flex flex-col justify-center">
@@ -50,10 +71,10 @@ function Login() {
               {showPassword ? (<FaEyeSlash size={20} />) : (<FaEye size={20} />)}
             </span>
           </div>
-
+          <p className='text-sm text-red-500'>{error}</p>
           <button
             type="submit"
-            className='bg-indigo-800 text-white rounded-md p-3 text-sm mt-4 hover:bg-indigo-700 hover:cursor-pointer transition-colors uppercase font-medium'
+            className='bg-indigo-800 text-white rounded-md p-3 text-sm hover:bg-indigo-700 hover:cursor-pointer transition-colors uppercase font-medium'
           >
             Login
           </button>
