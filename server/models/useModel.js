@@ -15,15 +15,44 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    refreshToken:{
+    profileImage:{
         type:String,
+        default:null
     },
-    imcome:{
-        type:Number,
-        default:0,
+    refreshToken: {
+        type: String,
     },
-    expense:{
-        type:Number,
-        default:0
+    income: {
+        type: Number,
+        default: null
+    },
+    expense: {
+        type: Number,
+        default: null
     }
 }, { timestamps: true })
+
+
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
+        return 
+    }
+    try {
+        this.password = await bcrypt.hash(this.password, 10);
+        // next();
+    }
+    catch (err) {
+        console.log("error in hashing password", err)
+        next(err)
+    }
+
+})
+
+
+userSchema.methods.isPasswordCorrect = async function(password) {
+    return await bcrypt.compare(password, this.password);
+}
+
+const User = mongoose.model('User', userSchema);
+
+export default User;

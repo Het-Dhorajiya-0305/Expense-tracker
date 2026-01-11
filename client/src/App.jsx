@@ -19,6 +19,10 @@ const Root = () => {
   return isAuthenticated ? (<Navigate to="/dashboard" />) : (<Navigate to="/login" />) 
 }
 
+export const backend_url=import.meta.env.VITE_BACKEND_URL;
+
+console.log("backend_url:",backend_url);
+
 function App() {
 
 

@@ -4,7 +4,8 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
 import {useNavigate} from 'react-router-dom'
 import { isValidEmail } from '../../context/helper.js';
-
+import axios from 'axios';
+import { backend_url } from '../../App.jsx';
 
 function Login() {
 
@@ -19,7 +20,7 @@ function Login() {
   }
 
 
-   const handleSubmit = (e) => {
+   const handleSubmit = async(e) => {
     e.preventDefault();
 
     if(!isValidEmail(email))
@@ -38,6 +39,31 @@ function Login() {
       return;
     }
     setError("");
+
+    try {
+      const payload={
+        email,
+        password
+      }
+
+      const response=await axios.post(`${backend_url}/api/auth/login`,payload,{
+        headers:{
+          'Content-Type':'application/json'
+        },
+        withCredentials:true
+      });
+      if(response.data.success)
+      {
+        navigate('/dashboard');
+      }
+      else
+      {
+        console.log("login failed:",response.data.message);
+        setError(response.data.message);
+      }
+    } catch (error) {
+      console.log("error in login:",error);
+    }
   }
 
 

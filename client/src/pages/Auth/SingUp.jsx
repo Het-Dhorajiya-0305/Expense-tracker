@@ -5,6 +5,8 @@ import { FaEyeSlash } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom'
 import ProfilePicSelector from '../../components/ProfilePicSelector.jsx';
 import { isValidEmail } from '../../context/helper.js';
+import axios from 'axios';
+import { backend_url } from '../../App.jsx';
 
 
 function SignUp() {
@@ -22,7 +24,7 @@ function SignUp() {
   }
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!fullName) {
@@ -40,6 +42,31 @@ function SignUp() {
     if (password.length < 8) {
       setError("Password must be at least 8 characters");
       return;
+    }
+
+    try {
+      const payload = {
+        fullName,
+        email,
+        password,
+        profileImageUrl: profileImage
+      }
+      console.log("payload:",payload);
+      
+      const response = await axios.post(`${backend_url}/api/auth/signup`, payload, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      if (response.data.success) {
+        navigate('/login');
+        console.log(response.data.user);
+      }
+      else {
+        console.log("error in signup:", response.data.message);
+      }
+    } catch (error) {
+      console.log("error in signup:", error);
     }
     setError("");
   }
