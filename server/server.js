@@ -5,10 +5,17 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import authRoute from './routes/authRoute.js';
 import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import incomeRoute from './routes/incomeRoute.js';
+
 
 dotenv.config({
     path: './.env'
 })
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 const app = express();
 
@@ -23,7 +30,7 @@ app.use(cors(
 
 
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static("public"))
+app.use('/uploads',express.static(path.join(__dirname,"uploads")))
 app.use(cookieParser())
 
 app.use(express.json());
@@ -34,6 +41,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/auth',authRoute);
+app.use('/api/income',incomeRoute);
 
 connectDB()
     .then(() => {

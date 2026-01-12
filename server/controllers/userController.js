@@ -12,7 +12,7 @@ const generateToken = async (user) => {
                 email: user.email,
                 fullName: user.fullName
             },
-            process.env.REFERSH_TOKEN_SECRET,
+            process.env.REFRESH_TOKEN_SECRET,
             {
                 expiresIn: process.env.REFRESH_TOKEN_EXPIRY
             }
@@ -30,9 +30,9 @@ const generateToken = async (user) => {
 const registerUser = async (req, res) => {
     try {
 
-        const { fullName, email, password, profileImageUrl } = req.body;
+        const { fullName, email, password } = req.body;
 
-        console.log("profileImageUrl:", profileImageUrl);
+        const profileImageUrl = req.file && `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
 
         if (!fullName || !email || !password) {
             return res.status(400).json({
@@ -56,7 +56,7 @@ const registerUser = async (req, res) => {
         }
 
         const existedUser = await User.findOne({
-            $or: [{ email, fullName }]
+            $or: [{ email }]
         })
 
         if (existedUser) {
@@ -70,7 +70,7 @@ const registerUser = async (req, res) => {
             fullName,
             email,
             password,
-            profileImageUrl
+            profileImage: profileImageUrl
         })
 
         const user = await User.findById(newUser._id).select('-password');
@@ -159,4 +159,98 @@ const loginUser = async (req, res) => {
     }
 }
 
-export { registerUser, loginUser }
+const logoutUser = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+
+        user.refreshToken = null;
+        await user.save({ validateBeforeSave: false });
+
+        const logoutUser = await User.findById(userId).select('-password -refreshToken');
+
+        const option = {
+            httpOnly: true,
+            secure: true,
+            path: "/",
+            sameSite: "None",
+            maxAge: 24 * 60 * 60 * 1000
+        }
+
+        return res.status(200).clearCookie("refreshToken", option).json({
+            success: true,
+            user: logoutUser,
+            message: "Logout successfully"
+        })
+
+
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+const getUserInfo = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        const user = await User.findById(userId).select('-password -refreshToken');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            user,
+            message: "User fetched successfully"
+        })
+    }
+    catch (error) {
+        return res.status(500).json({
+            success: true,
+            message: error.message
+        })
+    }
+}
+
+const uploadProfileImage = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: "No file uploaded"
+            })
+        }
+
+        const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+
+        return res.status(200).json({
+            success: true,
+            imageUrl,
+            message: "Image uploaded successfully"
+        })
+    }
+    catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+export { registerUser, loginUser, getUserInfo, uploadProfileImage, logoutUser };

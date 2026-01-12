@@ -1,11 +1,17 @@
 import { Router } from "express";
-import { loginUser, registerUser } from "../controllers/userController.js";
+import { getUserInfo, loginUser, logoutUser, registerUser, uploadProfileImage } from "../controllers/userController.js";
+import authMiddleware from "../middleware/authMiddleware.js";
+import upload from "../middleware/multerMiddleware.js";
 
 
 const authRoute=Router();
 
-authRoute.post('/signup',registerUser);
+authRoute.post('/signup',upload.single('profileImage'),registerUser);
 authRoute.post('/login',loginUser);
+authRoute.post('/logout',authMiddleware,logoutUser);
+authRoute.get('/user-info',authMiddleware,getUserInfo);
+
+
 
 
 export default authRoute;   
