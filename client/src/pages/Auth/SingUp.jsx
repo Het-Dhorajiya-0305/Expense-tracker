@@ -45,17 +45,15 @@ function SignUp() {
     }
 
     try {
-      const payload = {
-        fullName,
-        email,
-        password,
-        profileImageUrl: profileImage
-      }
-      console.log("payload:",payload);
-      
-      const response = await axios.post(`${backend_url}/api/auth/signup`, payload, {
+      const formData = new FormData();
+      formData.append('fullName', fullName);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('profileImage', profileImage);
+
+      const response = await axios.post(`${backend_url}/api/auth/signup`, formData, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'multipart/form-data'
         }
       })
       if (response.data.success) {

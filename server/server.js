@@ -8,6 +8,8 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import incomeRoute from './routes/incomeRoute.js';
+import expenseRoute from './routes/expenseRoute.js';
+import dashboardRoute from './routes/dashboardRoute.js';
 
 
 dotenv.config({
@@ -42,6 +44,10 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth',authRoute);
 app.use('/api/income',incomeRoute);
+app.use('/api/expense',expenseRoute);
+app.use('/api/dashboard',dashboardRoute);
+
+
 
 connectDB()
     .then(() => {
