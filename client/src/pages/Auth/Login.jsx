@@ -1,68 +1,69 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import AuthLayout from '../../components/AuthLayout.jsx'
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { isValidEmail } from '../../context/helper.js';
 import axios from 'axios';
 import { backend_url } from '../../App.jsx';
+import { UserContext } from '../../context/userContext.jsx';
 
 function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error,setError]=useState("");
-  const navigate=useNavigate();
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const { updateUser } = useContext(UserContext);
+
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   }
 
 
-   const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(!isValidEmail(email))
-    {
+    if (!isValidEmail(email)) {
       setError("please enter a valid email");
       return;
     }
-    if(!password)
-    {
+    if (!password) {
       setError("please enter a password");
       return;
     }
-    if(password.length<8)
-    {
+    if (password.length < 8) {
       setError("Password must be at least 8 characters");
       return;
     }
     setError("");
 
     try {
-      const payload={
+      const payload = {
         email,
         password
       }
 
-      const response=await axios.post(`${backend_url}/api/auth/login`,payload,{
-        headers:{
-          'Content-Type':'application/json'
+      const response = await axios.post(`${backend_url}/api/auth/login`, payload, {
+        headers: {
+          'Content-Type': 'application/json'
         },
-        withCredentials:true
+        withCredentials: true
       });
-      if(response.data.success)
-      {
+      if (response.data.success) {
+        localStorage.setItem("refreshtoken",response.data.token);
+        updateUser(response.data.user);
         navigate('/dashboard');
       }
-      else
-      {
-        console.log("login failed:",response.data.message);
+      else {
+        console.log("login failed:", response.data.message);
         setError(response.data.message);
       }
     } catch (error) {
-      console.log("error in login:",error);
+      console.log("error in login:", error);
     }
   }
 
@@ -89,7 +90,7 @@ function Login() {
             <input
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              type={showPassword?"type":"password"}
+              type={showPassword ? "type" : "password"}
               placeholder='min. 8 characters'
               className='w-[90%] focus:outline-none'
             />
@@ -105,7 +106,7 @@ function Login() {
             Login
           </button>
         </form>
-        <p className='text-sm'>Don't have an account? <span className='text-blue-700 underline hover:cursor-pointer'onClick={()=>navigate('/signUp')}>SignUp </span> </p>
+        <p className='text-sm'>Don't have an account? <span className='text-blue-700 underline hover:cursor-pointer' onClick={() => navigate('/signUp')}>SignUp </span> </p>
       </div>
     </AuthLayout>
   )

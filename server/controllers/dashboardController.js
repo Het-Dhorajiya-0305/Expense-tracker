@@ -67,18 +67,21 @@ const getDashboardData = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Dashboard data fetched successfully",
-            totalBalance: (totalIncome[0]?.totalAmount || 0) - (totalExpense[0]?.totalAmount || 0),
-            totalIncome: totalIncome[0]?.totalAmount || 0,
-            totalExpense: totalExpense[0]?.totalAmount || 0,
-            last50daysincome: {
-                amount: incomeLast50Days,
-                transactions: last50DaysIncomeTransactions
-            },
-            last20daysexpense: {
-                amount: expenseLast20Days,
-                transactions: last20DaysExpenseTransactions
-            },
-            recentTransactions: last5transaction
+            info: {
+                totalBalance: (totalIncome[0]?.totalAmount || 0) - (totalExpense[0]?.totalAmount || 0),
+                totalIncome: totalIncome[0]?.totalAmount || 0,
+                totalExpense: totalExpense[0]?.totalAmount || 0,
+                last50daysincome: {
+                    amount: incomeLast50Days,
+                    transactions: last50DaysIncomeTransactions
+                },
+                last20daysexpense: {
+                    amount: expenseLast20Days,
+                    transactions: last20DaysExpenseTransactions
+                },
+                recentTransactions: last5transaction
+            }
+
         })
 
 
@@ -89,5 +92,6 @@ const getDashboardData = async (req, res) => {
         })
     }
 }
+
 
 export { getDashboardData };

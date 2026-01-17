@@ -22,14 +22,6 @@ const userSchema =new mongoose.Schema({
     refreshToken: {
         type: String,
     },
-    income: {
-        type: Number,
-        default: null
-    },
-    expense: {
-        type: Number,
-        default: null
-    }
 }, { timestamps: true })
 
 

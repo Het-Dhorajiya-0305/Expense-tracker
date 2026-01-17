@@ -5,6 +5,8 @@ const authMiddleware = async (req, res, next) => {
     try {
         const token = req.cookies.refreshToken;
 
+        console.log(req.cookies.refreshToken);
+
         if (!token) {
             return res.status(401).json({
                 success: false,

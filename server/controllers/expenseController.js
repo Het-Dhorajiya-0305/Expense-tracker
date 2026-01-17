@@ -113,7 +113,7 @@ const downloadExpensesExcel = async (req, res) => {
             {
                 Amount: expenes.amount,
                 Category: expenes.category,
-                Date: expenes.date,
+                Date: expenes.date.toISOString().split('T')[0],
             }
         ))
 

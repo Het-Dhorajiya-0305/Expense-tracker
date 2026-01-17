@@ -1,8 +1,18 @@
 import React from 'react'
+import DashboardLayout from '../../components/DashboardLayout.jsx'
+import useUserAuth from '../../hooks/userAuth.jsx'
+
 
 function Home() {
+
+  useUserAuth();
+
   return (
-    <div>Home</div>
+      <DashboardLayout activeMenu="Dashboard">
+        <div className="mx-auto my-50">
+          Home
+        </div>
+      </DashboardLayout>
   )
 }
 
