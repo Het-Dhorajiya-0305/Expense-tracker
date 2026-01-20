@@ -6,7 +6,7 @@ import User from '../models/useModel.js';
 const generateToken = async (user) => {
 
     try {
-        const token = await jwt.sign(
+        const token = jwt.sign(
             {
                 _id: user._id,
                 email: user.email,
@@ -19,11 +19,12 @@ const generateToken = async (user) => {
         )
 
         user.refreshToken = token;
-        user.save({ validateBeforeSave: false })
+        await user.save({ validateBeforeSave: false })
 
         return token;
     } catch (error) {
-        return error;
+        console.error("Error generating token:", error);
+        throw error;
     }
 }
 
@@ -136,13 +137,26 @@ const loginUser = async (req, res) => {
 
         const loginedUser = await User.findById(user._id).select('-password -refreshToken');
 
+        // const option = {
+        //     httpOnly: true,
+        //     secure: false,
+        //     sameSite: "Lax",
+        //     path: "/",
+        //     maxAge: 24 * 60 * 60 * 1000
+        // };
+
+
+        // for production 
+
+
         const option = {
             httpOnly: true,
             secure: true,
-            path: "/",
             sameSite: "None",
+            path: "/",
             maxAge: 24 * 60 * 60 * 1000
-        }
+        };
+
 
         return res.status(200).cookie("refreshToken", token, option).json({
             success: true,
@@ -177,20 +191,31 @@ const logoutUser = async (req, res) => {
 
         const logoutUser = await User.findById(userId).select('-password -refreshToken');
 
+        // const option = {
+        //     httpOnly: true,
+        //     secure: false,
+        //     sameSite: "Lax",
+        //     path: "/",
+        //     maxAge: 24 * 60 * 60 * 1000
+        // };
+
+
+        // for production 
+
+
         const option = {
             httpOnly: true,
             secure: true,
-            path: "/",
             sameSite: "None",
+            path: "/",
             maxAge: 24 * 60 * 60 * 1000
-        }
+        };
 
         return res.status(200).clearCookie("refreshToken", option).json({
             success: true,
             user: logoutUser,
             message: "Logout successfully"
         })
-
 
 
     } catch (error) {
@@ -228,6 +253,20 @@ const getUserInfo = async (req, res) => {
     }
 }
 
+const checkAuth=async(req,res)=>{
+    try {
+        return res.status(200).json({
+            success:true,
+            message:"User Authenticated"
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"error in authenticate"
+        })
+    }
+}
+
 const uploadProfileImage = async (req, res) => {
     try {
         if (!req.file) {
@@ -253,4 +292,4 @@ const uploadProfileImage = async (req, res) => {
     }
 }
 
-export { registerUser, loginUser, getUserInfo, uploadProfileImage, logoutUser };
+export { registerUser, loginUser, getUserInfo, uploadProfileImage, logoutUser,checkAuth };

@@ -3,26 +3,27 @@ import jwt from "jsonwebtoken";
 
 const authMiddleware = async (req, res, next) => {
     try {
-        const token = req.cookies.refreshToken;
-
-        console.log(req.cookies.refreshToken);
-
+        let token = req.cookies.refreshToken;
+        
+        console.log("token : ", token)
+        
         if (!token) {
             return res.status(401).json({
                 success: false,
-                message: "Unauthorized access"
+                message: "Unauthorized access - no token found"
             });
         }
 
-        const user = await jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+        const user = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
 
         req.user = user;
         next();
 
     } catch (error) {
+        console.error("Auth error:", error.message);
         return res.status(401).json({
             success: false,
-            message: "Invalid token"
+            message: "Invalid token: " + error.message
         });
     }
 }

@@ -1,14 +1,15 @@
-import React, { useContext } from 'react'
-import { useNavigate, } from 'react-router-dom'
+import React, { useContext, useEffect } from 'react'
+import { useLocation, useNavigate, } from 'react-router-dom'
 import { UserContext } from '../context/userContext.jsx'
 import axios from 'axios';
 import { backend_url } from '../App.jsx';
 import { LuHandCoins, LuLayoutDashboard, LuLogOut, LuWalletMinimal } from 'react-icons/lu';
-
+import Avatar from 'react-avatar'
 function SideMenu({ activeMenu }) {
 
-    const { user, clearUser } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
+
 
     const menuItems = [
         {
@@ -36,22 +37,44 @@ function SideMenu({ activeMenu }) {
             path: 'logout'
         }
     ]
+
+
     const handleLogout = async () => {
         try {
-            const response = await axios.post(`${backend_url}/api/auth/logout`, {},{
+            const response = await axios.post(`${backend_url}/api/auth/logout`, {}, {
                 withCredentials: true
             });
 
             if (response.data.success) {
-                clearUser();
+                setUser(null)
                 navigate('/login');
-                localStorage.removeItem("refreshtoken");
+                // localStorage.removeItem("refreshToken");
             }
         }
         catch (error) {
 
         }
     }
+
+    useEffect(() => {
+        const getUserInfo = async () => {
+            try {
+                const response = await axios.get(backend_url + '/api/auth/user-info', {
+                    withCredentials: true,
+                })
+
+                if (response.data.success) {
+                    setUser(response.data.user);
+                }
+            } catch (error) {
+                console.error("Error in fetching user info", error.message);
+                setUser(null);
+                navigate("/login");
+            }
+        }
+
+        getUserInfo();
+    }, [])
 
 
     return (
@@ -60,12 +83,16 @@ function SideMenu({ activeMenu }) {
                 {
                     user?.profileImage ? (
                         <img
-                            src={user.profileImage || ""}
+                            src={user?.profileImage || ""}
                             alt="Profile Image"
                             className='w-20 h-20 rounded-full bg-slate-400'
                         />
                     ) : (
-                        <></>
+                        <Avatar
+                            name={user?.fullName}
+                            size="80"
+                            className='rounded-full'
+                        />
                     )
                 }
 

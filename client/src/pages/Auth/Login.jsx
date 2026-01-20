@@ -7,6 +7,7 @@ import { isValidEmail } from '../../context/helper.js';
 import axios from 'axios';
 import { backend_url } from '../../App.jsx';
 import { UserContext } from '../../context/userContext.jsx';
+import { toast } from 'react-toastify';
 
 function Login() {
 
@@ -16,7 +17,7 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const { updateUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
 
   const handleShowPassword = () => {
@@ -54,16 +55,20 @@ function Login() {
         withCredentials: true
       });
       if (response.data.success) {
-        localStorage.setItem("refreshtoken",response.data.token);
-        updateUser(response.data.user);
+        // localStorage.setItem("refreshToken",response.data.token);
+        setUser(response.data.user);
+        toast.success(response.data.message,{
+          autoClose:500
+        })
         navigate('/dashboard');
       }
       else {
         console.log("login failed:", response.data.message);
-        setError(response.data.message);
+        toast.error(response.data.message,{autoClose:700})
       }
     } catch (error) {
       console.log("error in login:", error);
+      toast.error(error.response.data.message,{autoClose:700})
     }
   }
 
