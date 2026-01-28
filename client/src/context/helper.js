@@ -10,4 +10,17 @@ function isValidEmail(email) {
     return emailRegex.test(trimmed);
 }
 
-export { isValidEmail };
+
+function formatBalance(balance,) {
+    if (balance == null || isNaN(balance)) return "0";
+    const currency = "INR"
+    return Number(balance).toLocaleString("en-US", {
+        style: "currency",
+        currency,
+        minimumFractionDigits: 0
+    });
+}
+
+
+
+export { isValidEmail, formatBalance };

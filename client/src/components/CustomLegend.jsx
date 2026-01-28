@@ -1,0 +1,18 @@
+import React from 'react'
+
+function CustomLegend({ payload }) {
+    return (
+        <div className="flex flex-wrap justify-center gap-2 mt-4 space-x-6">
+            {
+                payload.map((item, index) => (
+                    <div key={`legend-${index}`} className="flex items-center space-x-2">
+                        <div className="w-2.5 h-2.5 rounded-full" style={{backgroundColor:item.color}}></div>
+                        <span className='text-xs text-gray-700 font-medium'>{item.value}</span>
+                    </div>
+                ))
+            }
+        </div>
+    )
+}
+
+export default CustomLegend

@@ -1,10 +1,13 @@
 import React, { useContext, useEffect } from 'react'
-import { useLocation, useNavigate, } from 'react-router-dom'
+import {  useNavigate, } from 'react-router-dom'
 import { UserContext } from '../context/userContext.jsx'
 import axios from 'axios';
 import { backend_url } from '../App.jsx';
 import { LuHandCoins, LuLayoutDashboard, LuLogOut, LuWalletMinimal } from 'react-icons/lu';
 import Avatar from 'react-avatar'
+
+
+
 function SideMenu({ activeMenu }) {
 
     const { user, setUser } = useContext(UserContext);
@@ -56,25 +59,6 @@ function SideMenu({ activeMenu }) {
         }
     }
 
-    useEffect(() => {
-        const getUserInfo = async () => {
-            try {
-                const response = await axios.get(backend_url + '/api/auth/user-info', {
-                    withCredentials: true,
-                })
-
-                if (response.data.success) {
-                    setUser(response.data.user);
-                }
-            } catch (error) {
-                console.error("Error in fetching user info", error.message);
-                setUser(null);
-                navigate("/login");
-            }
-        }
-
-        getUserInfo();
-    }, [])
 
 
     return (

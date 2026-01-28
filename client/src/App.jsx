@@ -25,7 +25,7 @@ const Root = () => {
         withCredentials: true
       })
 
-      if ((await response).data.success) {
+      if ( response.data.success) {
         return true;
       }
     } catch (error) {

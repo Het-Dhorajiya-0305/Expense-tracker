@@ -1,9 +1,9 @@
-import React, { Children, useContext } from 'react'
+import React, { useContext } from 'react'
 import { UserContext } from '../context/userContext.jsx'
 import Navbar from './Navbar.jsx';
 import SideMenu from './SideMenu.jsx';
 
-function DashboardLayout({activeMenu,Children}) {
+function DashboardLayout({activeMenu,children}) {
 
     const {user}=useContext(UserContext);
   return (
@@ -13,10 +13,10 @@ function DashboardLayout({activeMenu,Children}) {
         {
             user && (
                 <div className="flex">
-                    <div className="max-[1080px]:hidden ">
+                    <div className="max-[1080px]:hidden">
                         <SideMenu activeMenu={activeMenu} />
                     </div>
-                    <div className="grow mx-5">{Children}</div>
+                    <div className="grow mx-5">{children}</div>
                 </div>
             )
         }
@@ -24,4 +24,4 @@ function DashboardLayout({activeMenu,Children}) {
   )
 }
 
-export default DashboardLayout
+export default DashboardLayout  
