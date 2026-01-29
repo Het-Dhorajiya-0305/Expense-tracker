@@ -1,7 +1,8 @@
 import React from 'react'
-import { formatBalance } from '../context/helper'
+import { formatBalance } from '../../context/helper'
 
 function CustomTooltip({ active, payload }) {
+
     if (active && payload && payload.length) {
 
         return (

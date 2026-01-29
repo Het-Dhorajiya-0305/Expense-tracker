@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import CustomPieChart from './PieChart'
+import CustomPieChart from './customGraphs/PieChart'
 import { formatBalance } from '../context/helper'
 
 

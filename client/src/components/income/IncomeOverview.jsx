@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { incomeBarChartData } from '../../context/helper';
 import { FiPlus } from "react-icons/fi";
-import CustomBarChart from '../CustomBarChart';
+import CustomBarChart from '../customGraphs/CustomBarChart';
 
 
 function IncomeOverview({transaction,onAddIncome}) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { expenseBarChartData } from '../context/helper';
-import CustomBarChart from './CustomBarChart';
+import CustomBarChart from './customGraphs/CustomBarChart';
 
 function Last20DaysExepenses({ data }) {
 

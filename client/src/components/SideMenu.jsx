@@ -62,7 +62,7 @@ function SideMenu({ activeMenu }) {
 
 
     return (
-        <div className='w-64 h-[cal(100vh-61px)] bg-white border-gray-200/50 p-4 sticky top-15 z-20'>
+        <div className='w-64 max-lg:h-screen h-[cal(100vh-61px)] bg-white border-gray-200/50 p-4 sticky top-15 z-20'>
             <div className="flex flex-col items-center justify-center mt-3 gap-3 mb-7">
                 {
                     user?.profileImage ? (

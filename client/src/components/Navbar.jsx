@@ -35,7 +35,7 @@ function Navbar({ activeMenu }) {
     }, [])
     return (
         <div className='flex gap-5 bg-white border border-b border-gray-200/50 backdrop-blur-[2px] px-6 py-4 sticky top-0 left-0 z-20' >
-            <button className='block lg:hidden text-black' onClick={() => setOpenSideMenu(!openSideMenu)}>
+            <button className='block lg:hidden text-black hover:cursor-pointer' onClick={() => setOpenSideMenu(!openSideMenu)}>
                 {openSideMenu ? (
                     <HiOutlineX className='text-3xl' />
                 ) : (

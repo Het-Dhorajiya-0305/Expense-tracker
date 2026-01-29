@@ -57,7 +57,7 @@ const getExpenses = async (req, res) => {
         return res.status(200).json({
             message: "Expenses fetched successfully",
             success: true,
-            data: expenses
+            expenses
         })
     } catch (error) {
         console.log(error);
@@ -113,7 +113,7 @@ const downloadExpensesExcel = async (req, res) => {
             {
                 Amount: expenes.amount,
                 Category: expenes.category,
-                Date: expenes.date.toISOString().split('T')[0],
+                Date: new Date(expenes.date).toLocaleDateString('en-GB'),
             }
         ))
 

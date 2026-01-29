@@ -1,6 +1,6 @@
 import React from 'react'
 import { formatBalance } from '../context/helper'
-import CustomPieChart from './PieChart'
+import CustomPieChart from './customGraphs/PieChart'
 
 function FinanceDashboard({ totalBalance, totalIncome, totalExpense }) {
 

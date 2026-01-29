@@ -4,8 +4,7 @@ import jwt from "jsonwebtoken";
 const authMiddleware = async (req, res, next) => {
     try {
         let token = req.cookies.refreshToken;
-        
-        console.log("token : ", token)
+    
         
         if (!token) {
             return res.status(401).json({

@@ -94,12 +94,12 @@ function Home() {
           />
 
           <RecentIncomeChart
-            data={userData?.last50daysincome?.transactions.slice(0,5) || [] }
+            data={userData?.last50daysincome?.transactions.slice(0,4) || [] }
             totalIncome={userData?.totalIncome || 0}
           />
 
           <RecentIncome
-            data={userData?.last50daysincome?.transactions.slice(0,5)||[]}
+            data={userData?.last50daysincome?.transactions.slice(0,4)||[]}
             onSeeMore={()=>navigate('/income')}
           />
         </div>

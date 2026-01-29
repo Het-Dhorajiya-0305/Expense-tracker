@@ -36,16 +36,28 @@ const expenseBarChartData=(data=[])=>{
 const incomeBarChartData=(data=[])=>{
     const sortedData=[...data].sort((a,b)=>new Date(a.data)-new Date(b.data));
 
-
     const incomedata=sortedData.map((item)=>({
-        month:moment(item?.data).format("Do MMM"),
+        month:moment(item.date).format("Do MMM"),
         amount:item?.amount,
         source:item?.source
     }))
 
+
     return incomedata
+}
+
+const lineChartData=(data=[])=>{
+    const sortedData=[...data].sort((a,b)=>new Date(a,data)-new Date(b.data))
+
+    const newData=sortedData.map((item)=>({
+        month:moment(item?.date).format("Do MMM"),
+        amount:item?.amount,
+        category:item?.category
+    }))
+
+    return newData
 }
 
 
 
-export { isValidEmail, formatBalance,expenseBarChartData,incomeBarChartData };
+export { isValidEmail, formatBalance,expenseBarChartData,incomeBarChartData ,lineChartData};

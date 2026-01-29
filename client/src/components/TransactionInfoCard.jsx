@@ -4,7 +4,7 @@ import { FiTrash2 } from "react-icons/fi";
 import { formatBalance } from '../context/helper';
 
 
-function TransactionInfoCard({ title, date, amount, type, hideDeleteBtn }) {
+function TransactionInfoCard({ title, date, amount, type, hideDeleteBtn ,onDelete}) {
   return (
     <div className='group relative flex items-center gap-4 mt-2 p-3 rounded-lg hover:bg-gray-200'>
       <div className={`w-12 h-12 flex items-center justify-center text-xl text-gray-800 rounded-full ${type == "income" ? "bg-green-500" : "bg-red-500"}`}>
@@ -27,7 +27,7 @@ function TransactionInfoCard({ title, date, amount, type, hideDeleteBtn }) {
           {
             !hideDeleteBtn && (
               <button
-                className='text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer'
+                className='text-red-500 sm:text-gray-400 hover:text-red-500 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity cursor-pointer'
                 onClick={onDelete}
               >
                 <FiTrash2 size={18} />
@@ -36,10 +36,10 @@ function TransactionInfoCard({ title, date, amount, type, hideDeleteBtn }) {
           }
 
           <div className={`flex items-center gap-2 px-3 py-1.5 rounded-md ${type=="income"?"bg-green-50 text-green-500":"bg-red-50 text-red-500"}`}>
-            <h5 className='text-md font-medium'>
+            <h5 className='text-sm font-medium'>
               {type == "income" ? "+" : "-"} {formatBalance(amount)}
             </h5>
-            {type == "income" ? <LuTrendingUp size={18}/> : <LuTrendingDown size={18}/>}
+            {type == "income" ? <LuTrendingUp size={16}/> : <LuTrendingDown size={16}/>}
           </div>
         </div>
       </div>
