@@ -10,12 +10,16 @@ import { IoMdCard } from 'react-icons/io'
 import RecentTraction from '../../components/RecentTraction.jsx'
 import { useNavigate } from 'react-router-dom'
 import FinanceDashboard from '../../components/FinanceDashboard.jsx'
+import ExpenseTransactions from '../../components/ExpenseTransactions.jsx'
+import Last20DaysExepenses from '../../components/Last20DaysExepenses.jsx'
+import RecentIncomeChart from '../../components/RecentIncomeChart.jsx'
+import RecentIncome from '../../components/RecentIncome.jsx'
 
 function Home() {
 
   const { userData, setUserData } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const fetchUserData = async () => {
 
@@ -79,7 +83,24 @@ function Home() {
             totalBalance={userData?.totalBalance||0}
             totalIncome={userData?.totalIncome||0}
             totalExpense={userData?.totalExpense||0}
+          />
 
+          <ExpenseTransactions
+            transactions={userData?.last20daysexpense?.transactions}
+            onSeeMore={() => navigate('/expense')}
+          />
+          <Last20DaysExepenses
+            data={userData?.last20daysexpense?.transactions || []}
+          />
+
+          <RecentIncomeChart
+            data={userData?.last50daysincome?.transactions.slice(0,5) || [] }
+            totalIncome={userData?.totalIncome || 0}
+          />
+
+          <RecentIncome
+            data={userData?.last50daysincome?.transactions.slice(0,5)||[]}
+            onSeeMore={()=>navigate('/income')}
           />
         </div>
       </div>

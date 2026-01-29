@@ -6,7 +6,7 @@ import moment from "moment"
 
 function RecentTraction({ transactions, onSeeMore }) {
   return (
-    <div className='bg-white p-5 rounded-2xl shadow-md shadow-gray-100 border border-gray-300/50'>
+    <div className='main-container'>
       <div className="flex items-center justify-between">
         <h4 className='text-lg capitalize'>Recent Transactions</h4>
 

@@ -57,18 +57,22 @@ function Login() {
       if (response.data.success) {
         // localStorage.setItem("refreshToken",response.data.token);
         setUser(response.data.user);
-        toast.success(response.data.message,{
-          autoClose:500
-        })
+        toast.success(response.data.message, { autoClose: 500, position: 'top-center' })
         navigate('/dashboard');
       }
       else {
         console.log("login failed:", response.data.message);
-        toast.error(response.data.message,{autoClose:700})
+        toast.error(response.data.message, {
+          autoClose: 500,
+          position: 'top-center'
+        })
       }
     } catch (error) {
       console.log("error in login:", error);
-      toast.error(error.response.data.message,{autoClose:700})
+      toast.error(error.response.data.message, {
+        autoClose: 500,
+        position: 'top-center'
+      })
     }
   }
 

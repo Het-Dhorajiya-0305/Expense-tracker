@@ -1,3 +1,5 @@
+import moment from "moment";
+
 function isValidEmail(email) {
     if (typeof email !== "string") return false;
 
@@ -21,6 +23,29 @@ function formatBalance(balance,) {
     });
 }
 
+const expenseBarChartData=(data=[])=>{
+    const expenseData=data.map((item)=>(
+        {
+            category:item?.category,
+            amount:item?.amount
+        }
+    ))
+
+    return expenseData
+}
+const incomeBarChartData=(data=[])=>{
+    const sortedData=[...data].sort((a,b)=>new Date(a.data)-new Date(b.data));
 
 
-export { isValidEmail, formatBalance };
+    const incomedata=sortedData.map((item)=>({
+        month:moment(item?.data).format("Do MMM"),
+        amount:item?.amount,
+        source:item?.source
+    }))
+
+    return incomedata
+}
+
+
+
+export { isValidEmail, formatBalance,expenseBarChartData,incomeBarChartData };

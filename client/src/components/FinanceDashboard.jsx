@@ -12,7 +12,7 @@ function FinanceDashboard({ totalBalance, totalIncome, totalExpense }) {
         { name: "Total Expense", amount: totalExpense }
     ]
     return (
-        <div className='bg-white p-5 rounded-2xl shadow-md shadow-gray-100 border border-gray-300/50'>
+        <div className='main-container'>
             <div className="flex items-center justify-between">
                 <h4 className='text-lg'>Financial Overview</h4>
             </div>
