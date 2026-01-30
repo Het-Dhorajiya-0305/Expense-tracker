@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {  useNavigate, } from 'react-router-dom'
 import { UserContext } from '../context/userContext.jsx'
 import axios from 'axios';
 import { backend_url } from '../App.jsx';
 import { LuHandCoins, LuLayoutDashboard, LuLogOut, LuWalletMinimal } from 'react-icons/lu';
 import Avatar from 'react-avatar'
+import { normalizeImageUrl } from '../context/helper';
 
 
 
@@ -67,7 +68,7 @@ function SideMenu({ activeMenu }) {
                 {
                     user?.profileImage ? (
                         <img
-                            src={user?.profileImage || ""}
+                            src={normalizeImageUrl(user?.profileImage) || ""}
                             alt="Profile Image"
                             className='w-20 h-20 rounded-full bg-slate-400'
                         />

@@ -59,5 +59,23 @@ const lineChartData=(data=[])=>{
 }
 
 
+function normalizeImageUrl(url) {
+    if (!url) return null;
+    try {
+        const parsed = new URL(url);
+        const hostname = parsed.hostname;
 
-export { isValidEmail, formatBalance,expenseBarChartData,incomeBarChartData ,lineChartData};
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            const backend = import.meta.env.VITE_BACKEND_URL || '';
+            return backend.replace(/\/$/, '') + parsed.pathname + (parsed.search || '');
+        }
+
+        return url;
+    } catch (err) {
+        return url;
+    }
+}
+
+export { isValidEmail, formatBalance,expenseBarChartData,incomeBarChartData ,lineChartData,normalizeImageUrl};
+
+
