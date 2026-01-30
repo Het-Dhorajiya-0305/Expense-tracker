@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { FaSortAmountDown } from 'react-icons/fa'
 import Input from '../Input'
 
 function AddIncome({ onAddIncome }) {

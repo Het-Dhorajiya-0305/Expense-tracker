@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
@@ -34,9 +33,7 @@ app.use(cors(
 app.use(express.urlencoded({ extended: true }))
 app.use('/uploads',express.static(path.join(__dirname,"uploads")))
 app.use(cookieParser())
-
 app.use(express.json());
-app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
